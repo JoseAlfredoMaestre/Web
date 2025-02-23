@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container{
+            width: 90%;
+            max-width: 1000px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            
+        }
+        label{
+            display:block;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        input,select,textarea{
+            width: 90%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Registro de persona</h1>
+        <form id="formPersona" enctype="multipart/form-data">
+            <fieldset>
+                <legend>Datos Personales</legend>
+                <label for="nombre">Nombre:</label>
+                <input type="text" name="nombre" id="nombre" required>
+
+                <label for="apellido">Apellido:</label>
+                <input type="text" name="apellido" id="apellido" required>
+
+                <label for="edad">Edad:</label>
+                <input type="number" name="edad" id="edad" required min="1">
+
+                <label for="genero">Genero</label>
+                <select name="genero" id="genero">
+                    <option value="Masculino">Masculino</option>
+                    <option value="Femenino">Femenino</option>
+                    <option value="Otros">Otros</option>
+                </select>
+
+                <label for="foto">Foto de perfil:</label>
+                <input type="file" name="foto" id="foto" accept="image/*">
+            </fieldset>
+            <fieldset>
+                <legend>Datos de contacto</legend>
+                <label for="correo">Correo:</label>
+                <input type="text" name="correo" id="correo" required>
+
+                <label for="telefono">Telefono:</label>
+                <input type="tel" name="telefono" id="telefono" required>
+            </fieldset>
+            <fieldset>
+                <legend>Datos adicionales</legend>
+                <label for="direccion">Direccion:</label>
+                <textarea id="direccion"></textarea>
+
+                <label for="fecha">Fecha de nacimiento:</label>
+                <input type="date" name="fecha" id="fecha" required>
+            </fieldset>
+
+            <input type="submit" value="Guardar" class="btn-pequeno">
+            <button type="button" id="limpiarFormulario">Limpiar</button>
+        </form>
+
+        <table id="tablaPersonas">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Edad</th>
+                    <th>Genero</th>
+                    <th>Correo</th>
+                    <th>Telefono</th>
+                    <th>Direccion</th>
+                    <th>Fecha de Nacimiento</th>
+                    <th>Foto de Perfil</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+    <script>
+        const personas = [];
+
+        document.getElementById("formPersona")
+            .addEventListener("submit", function(event) {
+                event.preventDefault();
+
+                const persona = {
+                    nombre: document.getElementById("nombre").value,
+                    apellido: document.getElementById("apellido").value,
+                    edad: document.getElementById("edad").value,
+                    genero: document.getElementById("genero").value,
+                    correo: document.getElementById("correo").value,
+                    telefono: document.getElementById("telefono").value,
+                    direccion: document.getElementById("direccion").value,
+                    fechaNacimiento: document.getElementById("fecha").value,
+                    foto: document.getElementById("foto").files[0] ? URL.createObjectURL(document.getElementById("foto").files[0]) : ''
+                };
+
+                personas.push(persona);
+                alert(JSON.stringify(persona));
+
+                const tabla = document.getElementById("tablaPersonas").getElementsByTagName('tbody')[0];
+                const nuevaFila = tabla.insertRow();
+
+                nuevaFila.insertCell(0).textContent = persona.nombre;
+                nuevaFila.insertCell(1).textContent = persona.apellido;
+                nuevaFila.insertCell(2).textContent = persona.edad;
+                nuevaFila.insertCell(3).textContent = persona.genero;
+                nuevaFila.insertCell(4).textContent = persona.correo;
+                nuevaFila.insertCell(5).textContent = persona.telefono;
+                nuevaFila.insertCell(6).textContent = persona.direccion;
+                nuevaFila.insertCell(7).textContent = persona.fechaNacimiento;
+                const fotoCell = nuevaFila.insertCell(8);
+                if (persona.foto) {
+                    const img = document.createElement('img');
+                    img.src = persona.foto;
+                    img.width = 50;
+                    img.height = 50;
+                    fotoCell.appendChild(img);
+                }
+            });
+
+        document.getElementById("limpiarFormulario")
+            .addEventListener("click", function() {
+                document.getElementById("formPersona").reset();
+            });
+    </script>
+</body>
+</html>
+
