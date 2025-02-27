@@ -1,51 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        body{
-            font-family: 'Courier New', Courier, monospace;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .container{
-            width: 90%;
-            max-width: 1000px;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            
-        }
-        label{
-            display:block;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-        input,select,textarea{
-            width: 90%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        table, th, td {
-            border: 1px solid black;
-        }
-        th, td {
-            padding: 10px;
-            text-align: left;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
+    
+    
 </head>
 <body>
     <div>
+        
         <h1>Registro de persona</h1>
         <form id="formPersona" enctype="multipart/form-data">
             <fieldset>
@@ -85,9 +50,25 @@
                 <label for="fecha">Fecha de nacimiento:</label>
                 <input type="date" name="fecha" id="fecha" required>
             </fieldset>
+            <fieldset>
+                <legend>Radio y checkbox</legend>
+                <input type="checkbox" id="terminos" value="acepto" >
+                <label for="terminos">Deportes</label><br>
+
+                <input type="checkbox" id="musica" value="musica" >
+                <label for="musica">Música</label><br>
+
+                <input type="radio" id="verde" value="verde" >
+                <label for="verde">Color verde</label><br>
+
+                <input type="radio" id="azul" value="azul" >
+                <label for="azul">Color azul</label><br>
+
+                
+            </fieldset>
 
             <input type="submit" value="Guardar" class="btn-pequeno">
-            <button type="button" id="limpiarFormulario">Limpiar</button>
+            <button type="button" id="limpiarFormulario" class="btn-limpiar">Limpiar</button>
         </form>
 
         <table id="tablaPersonas">
@@ -109,54 +90,8 @@
             </tbody>
         </table>
     </div>
-    <script>
-        const personas = [];
+    <script src="taller.js"></script>
+</body>
 
-        document.getElementById("formPersona")
-            .addEventListener("submit", function(event) {
-                event.preventDefault();
-
-                const persona = {
-                    nombre: document.getElementById("nombre").value,
-                    apellido: document.getElementById("apellido").value,
-                    edad: document.getElementById("edad").value,
-                    genero: document.getElementById("genero").value,
-                    correo: document.getElementById("correo").value,
-                    telefono: document.getElementById("telefono").value,
-                    direccion: document.getElementById("direccion").value,
-                    fechaNacimiento: document.getElementById("fecha").value,
-                    foto: document.getElementById("foto").files[0] ? URL.createObjectURL(document.getElementById("foto").files[0]) : ''
-                };
-
-                personas.push(persona);
-                alert(JSON.stringify(persona));
-
-                const tabla = document.getElementById("tablaPersonas").getElementsByTagName('tbody')[0];
-                const nuevaFila = tabla.insertRow();
-
-                nuevaFila.insertCell(0).textContent = persona.nombre;
-                nuevaFila.insertCell(1).textContent = persona.apellido;
-                nuevaFila.insertCell(2).textContent = persona.edad;
-                nuevaFila.insertCell(3).textContent = persona.genero;
-                nuevaFila.insertCell(4).textContent = persona.correo;
-                nuevaFila.insertCell(5).textContent = persona.telefono;
-                nuevaFila.insertCell(6).textContent = persona.direccion;
-                nuevaFila.insertCell(7).textContent = persona.fechaNacimiento;
-                const fotoCell = nuevaFila.insertCell(8);
-                if (persona.foto) {
-                    const img = document.createElement('img');
-                    img.src = persona.foto;
-                    img.width = 50;
-                    img.height = 50;
-                    fotoCell.appendChild(img);
-                }
-            });
-
-        document.getElementById("limpiarFormulario")
-            .addEventListener("click", function() {
-                document.getElementById("formPersona").reset();
-            });
-    </script>
 </body>
 </html>
-
